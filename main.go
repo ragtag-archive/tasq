@@ -32,29 +32,30 @@ A basic, easy to use task queue service.
 ----------------------------------------
 
 PUT /:list
-    Add the request body to the list.
+    Add the request body to the list. If the item is already in the list, its
+    priority will be bumped up by one.
 
     Example:
     curl -XPUT -d 'wowzers' https://tasq.url/test
     {
         "ok": true,
         "payload": {
-            "key": "test:1606841828655"
+            "key": "test:wowzers"
         },
         "message": ""
     }
 
 
 GET /:list
-    List available task keys and total count in the
-    specified list.
+    List the first 100 task keys and total count in the specified list, ordered
+    by priority from highest to lowest.
 
     Example:
     curl -XGET https://tasq.url/test
     {
         "ok": true,
         "payload": {
-            "tasks": ["test:1606841828655"],
+            "tasks": ["test:wowzers"],
             "count": 1
         },
         "message": ""
@@ -62,15 +63,15 @@ GET /:list
 
 
 POST /:list
-    Consume an item from the queue. Once consumed, the item
-    will be removed from the list.
+    Consume an item from the queue. Once consumed, the item will be removed
+    from the list. The item with the highest priority will be consumed first.
 
     Example:
     curl -XPOST https://tasq.url/test
     {
         "ok": true,
         "payload": {
-            "key": "test:1606841828655",
+            "key": "test:wowzers",
             "data": "wowzers"
         },
         "message": ""

@@ -1,5 +1,20 @@
 # tasq
 
+Task queue using Redis. Requires Golang 1.18.
+
+```
+$ make
+```
+
+## Configuration
+
+```
+REDIS_URL="127.0.0.1:6379"
+REDIS_PASSWORD=""
+REDIS_DATABASE="0"
+BIND_ADDRESS=":8080"
+```
+
 ```
                  _
                 | |
@@ -20,7 +35,8 @@ A basic, easy to use task queue service.
 ----------------------------------------
 
 PUT /:list
-    Add the request body to the list.
+    Add the request body to the list. If the item is already in the list, its
+    priority will be bumped up by one.
 
     Example:
     curl -XPUT -d 'wowzers' https://tasq.url/test
@@ -34,8 +50,8 @@ PUT /:list
 
 
 GET /:list
-    List available task keys and total count in the
-    specified list.
+    List the first 100 task keys and total count in the specified list, ordered
+    by priority from highest to lowest.
 
     Example:
     curl -XGET https://tasq.url/test
@@ -50,8 +66,8 @@ GET /:list
 
 
 POST /:list
-    Consume an item from the queue. Once consumed, the item
-    will be removed from the list.
+    Consume an item from the queue. Once consumed, the item will be removed
+    from the list. The item with the highest priority will be consumed first.
 
     Example:
     curl -XPOST https://tasq.url/test
