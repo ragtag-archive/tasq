@@ -1,9 +1,10 @@
 # tasq
 
-Task queue using Redis. Requires Golang 1.18.
+Task queue using Redis. Requires Golang 1.18. A Dockerfile and docker-compose
+file is provided for reference. It should work out of the box:
 
 ```
-$ make
+docker-compose up
 ```
 
 ## Configuration

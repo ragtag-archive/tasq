@@ -123,6 +123,8 @@ func httpError(w http.ResponseWriter, status int, message string) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.RemoteAddr, r.Method, r.URL.Path)
+
 	queueName := r.URL.Path[1:]
 
 	if queueName == "" {
