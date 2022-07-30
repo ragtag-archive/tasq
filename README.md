@@ -16,6 +16,36 @@ REDIS_DATABASE="0"
 BIND_ADDRESS=":8080"
 ```
 
+## Deployment
+
+You can also use this `docker-compose.yaml` to run a pre-built `tasq` image,
+along with Redis with persistence. This configuration creates a snapshot of your
+Redis database every 60 seconds if at least one write happened.
+
+```yaml
+version: '3'
+services:
+  tasq:
+    image: ghcr.io/ragtag-archive/tasq:main
+    restart: unless-stopped
+    environment:
+      - REDIS_URL=redis:6379
+    ports:
+      - 127.0.0.1:8080:8080
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./data:/data
+```
+
+Run with `docker-compose up -d`, and then set up your reverse proxy to point to
+`127.0.0.1:8080`.
+
+## API
+
 ```
                  _
                 | |
