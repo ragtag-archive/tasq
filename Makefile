@@ -16,3 +16,7 @@ run: tasq
 .PHONY: clean
 clean:
 	$(RM) tasq
+
+.PHONY: docker
+docker:
+	docker build -t tasq .
